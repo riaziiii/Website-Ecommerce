@@ -1,18 +1,39 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Register</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Font Awesome for eye icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-  <h2>Register</h2>
-  <input id="reg-username" type="text" placeholder="Username" required />
-  <input id="reg-email" type="email" placeholder="Email" required />
-  <input id="reg-password" type="password" placeholder="Password" required />
-  <label><input type="checkbox" id="reg-show-password"> Show Password</label>
-  <button id="registerBtn">Register</button>
-  <p><a href="index.html">Already have an account? Login here</a></p>
+  <div class="login-container">
+    <h2>Register</h2>
+
+    <input id="reg-username" type="text" placeholder="Username" required />
+    <input id="reg-email" type="email" placeholder="Email" required />
+
+    <div class="password-wrapper">
+      <input id="reg-password" type="password" placeholder="Password" required />
+      <i id="toggle-reg-password" class="fa-solid fa-eye toggle-icon"></i>
+    </div>
+
+    <button id="registerBtn">Register</button>
+    <p><a href="index.html">Already have an account? Login here</a></p>
+  </div>
 
   <script type="module" src="./register.js"></script>
+  <script>
+    const toggleRegPassword = document.getElementById("toggle-reg-password");
+    const regPasswordInput = document.getElementById("reg-password");
+
+    toggleRegPassword.addEventListener("click", () => {
+      const isPassword = regPasswordInput.type === "password";
+      regPasswordInput.type = isPassword ? "text" : "password";
+      toggleRegPassword.classList.toggle("fa-eye");
+      toggleRegPassword.classList.toggle("fa-eye-slash");
+    });
+  </script>
 </body>
 </html>

@@ -1,12 +1,8 @@
-import { auth, db } from "./firebase.js";
+import { auth, db } from "./firebase.js"; 
 import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import { ref, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
 const $ = id => document.getElementById(id);
-
-$("reg-show-password").addEventListener("change", e => {
-  $("reg-password").type = e.target.checked ? "text" : "password";
-});
 
 $("registerBtn").addEventListener("click", async () => {
   const username = $("reg-username").value.trim();
