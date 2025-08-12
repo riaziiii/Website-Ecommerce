@@ -1,4 +1,4 @@
-import { auth } from "./firebase-config.js";
+import { auth } from "./firebase.js";
 import { sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
 const $ = id => document.getElementById(id);
@@ -10,7 +10,7 @@ $("resetBtn").addEventListener("click", async () => {
   try {
     await sendPasswordResetEmail(auth, email);
     alert("Password reset email sent! Please check your inbox.");
-    window.location.href = "login.html";
+    window.location.href = "index.html";
   } catch (err) {
     alert(getFriendlyError(err.code));
   }
