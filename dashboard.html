@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+</head>
+<body>
+  <h2 id="welcome-msg">Loading...</h2>
+  <button id="logoutBtn">Logout</button>
+
+  <script type="module">
+    import { auth } from "./firebase.js";
+    import { signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    const username = localStorage.getItem("username");
+    if (username) {
+      document.getElementById("welcome-msg").textContent = `Welcome, ${username}!`;
+    } else {
+      window.location.href = "index.html"; // Redirect if not logged in
+    }
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await signOut(auth);
+      localStorage.removeItem("username");
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
