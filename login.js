@@ -4,10 +4,19 @@ import { ref, get } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-dat
 
 const $ = id => document.getElementById(id);
 
-$("login-show-password").addEventListener("change", e => {
-  $("login-password").type = e.target.checked ? "text" : "password";
+// Toggle password visibility
+const togglePassword = $("toggle-password");
+const passwordInput = $("login-password");
+
+togglePassword.addEventListener("click", () => {
+  const isPassword = passwordInput.type === "password";
+  passwordInput.type = isPassword ? "text" : "password";
+  
+  togglePassword.classList.toggle("fa-eye");
+  togglePassword.classList.toggle("fa-eye-slash");
 });
 
+// Login button click
 $("loginBtn").addEventListener("click", async () => {
   const email = $("login-email").value.trim();
   const password = $("login-password").value;

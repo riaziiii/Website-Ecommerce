@@ -2,28 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard</title>
+  <title>Beauty Glow - Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
-  <h2 id="welcome-msg">Loading...</h2>
-  <button id="logoutBtn">Logout</button>
 
-  <script type="module">
-    import { auth } from "./firebase.js";
-    import { signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  <!-- Header -->
+  <header>
+    <div class="brand">💄 Beauty Glow</div>
+    <nav class="nav-links">
+      <a href="#hero">Home</a>
+      <a href="cart.html">🛒 Cart</a>
+      <a href="#contact">Contact</a>
+      <span id="username-display"></span>
+      <button id="logoutBtn">Logout</button>
+    </nav>
+  </header>
 
-    const username = localStorage.getItem("username");
-    if (username) {
-      document.getElementById("welcome-msg").textContent = `Welcome, ${username}!`;
-    } else {
-      window.location.href = "index.html"; // Redirect if not logged in
-    }
+  <!-- Hero Banner -->
+  <section id="hero" class="hero">
+    <div class="hero-content">
+      <h2>Discover Your Glow</h2>
+      <img src="img/luminous-glass-skin-mkp-banner.jpg" alt="Beauty Banner" class="hero-img">
+      <p>Premium beauty & cosmetics at your fingertips.</p>
+      <button class="cta" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Shop Now</button>
+    </div>
+  </section>
 
-    document.getElementById("logoutBtn").addEventListener("click", async () => {
-      await signOut(auth);
-      localStorage.removeItem("username");
-      window.location.href = "index.html";
-    });
-  </script>
+  <!-- Product Grid -->
+  <main id="products" class="product-grid"></main>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact-section">
+    <h2>Contact Us</h2>
+    <p>We’d love to hear from you! Fill out the form below or reach us directly.</p>
+    <div class="contact-container">
+      <!-- Contact Form -->
+      <form id="contactForm">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+
+      <!-- Contact Info -->
+      <div class="contact-info">
+        <p>📍 123 Beauty St, Glow City</p>
+        <p>📧 support@beautyglow.com</p>
+        <p>📞 +63 912 345 6789</p>
+        <p>🕒 Mon - Sat: 9:00 AM - 7:00 PM</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Beauty Glow. All Rights Reserved.</p>
+  </footer>
+
+  <!-- Dashboard Logic -->
+  <script src="dashboard.js"></script>
 </body>
 </html>
