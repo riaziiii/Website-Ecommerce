@@ -3,16 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-  <h2>Login</h2>
-  <input id="login-email" type="email" placeholder="Email" required>
-  <input id="login-password" type="password" placeholder="Password" required>
-  <label><input type="checkbox" id="login-show-password"> Show Password</label>
-  <button id="loginBtn">Login</button>
-  <p><a href="forgot-password.html">Forgot Password?</a></p>
-  <p><a href="register.html">Register</a></p>
- 
+  <div class="login-container">
+    <h2>Login</h2>
+
+    <input id="login-email" type="email" placeholder="Email" required>
+
+    <div class="password-wrapper">
+      <input id="login-password" type="password" placeholder="Password" required>
+      <i id="toggle-password" class="fa-solid fa-eye toggle-icon"></i>
+    </div>
+
+    <button id="loginBtn">Login</button>
+
+    <p><a href="forgot-password.html">Forgot Password?</a></p>
+    <p><a href="register.html">Register</a></p>
+  </div>
+
   <script type="module" src="login.js"></script>
+  <script>
+    const togglePassword = document.getElementById("toggle-password");
+    const passwordInput = document.getElementById("login-password");
+
+    togglePassword.addEventListener("click", () => {
+      const isPassword = passwordInput.type === "password";
+      passwordInput.type = isPassword ? "text" : "password";
+
+      // Toggle icon class
+      togglePassword.classList.toggle("fa-eye");
+      togglePassword.classList.toggle("fa-eye-slash");
+    });
+  </script>
 </body>
 </html>

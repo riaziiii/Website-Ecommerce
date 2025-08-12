@@ -1,9 +1,84 @@
+body {
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
 
+.login-container {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  width: 320px;
+  text-align: center;
+}
 
+.login-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
 
+.login-container input,
+.login-container button {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  font-size: 14px;
+  box-sizing: border-box;
+}
 
+.login-container input[type="email"]:focus,
+.login-container input[type="password"]:focus,
+.login-container input[type="text"]:focus {
+  border-color: #4facfe;
+  box-shadow: 0 0 5px rgba(79, 172, 254, 0.5);
+}
 
+.login-container button {
+  background: #4facfe;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
 
+.login-container button:hover {
+  background: #00c6fb;
+}
 
+.login-container p a {
+  color: #4facfe;
+  text-decoration: none;
+}
+.login-container p a:hover {
+  text-decoration: underline;
+}
 
+.password-wrapper {
+  position: relative;
+}
 
+.password-wrapper input {
+  padding-right: 40px;
+}
+
+.toggle-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+}
+.toggle-icon:hover {
+  color: #4facfe;
+}
