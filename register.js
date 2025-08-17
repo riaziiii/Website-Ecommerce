@@ -20,7 +20,7 @@ $("registerBtn").addEventListener("click", async () => {
     await set(ref(db, "users/" + uid), { username, email });
     localStorage.setItem("username", username);
 
-    window.location.href = "dashboard.html";
+    window.location.href = "index.html";
   } catch (err) {
     if (err.code === "auth/email-already-in-use") {
       alert("This email is already registered.");

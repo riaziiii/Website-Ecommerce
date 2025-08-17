@@ -49,15 +49,33 @@ document.addEventListener("click", e => {
   }
 });
 
-// Logout
-document.getElementById("logoutBtn").addEventListener("click", () => {
-  localStorage.clear();
-  window.location.href = "index.html";
-});
+// Show user controls (login/register OR username/logout)
+function renderUserControls() {
+  const userControls = document.getElementById("user-controls");
+  const username = localStorage.getItem("username");
 
-// Show username
+  if (username) {
+    // Logged in
+    userControls.innerHTML = `
+      <span>Hi, ${username}</span>
+      <button id="logoutBtn">Logout</button>
+    `;
+
+    // Add logout event listener
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "login.html"; // ✅ go back to login page
+    });
+  } else {
+    // Guest
+    userControls.innerHTML = `
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+    `;
+  }
+}
+
 window.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("username-display").textContent =
-    "Hi, " + (localStorage.getItem("username") || "Guest");
+  renderUserControls();
   loadProducts();
 });

@@ -35,7 +35,7 @@ $("loginBtn").addEventListener("click", async () => {
       localStorage.setItem("username", email);
     }
 
-    window.location.href = "dashboard.html";
+    window.location.href = "index.html";
   } catch (err) {
     if (err.code === "auth/invalid-credential") {
       const methods = await fetchSignInMethodsForEmail(auth, email);

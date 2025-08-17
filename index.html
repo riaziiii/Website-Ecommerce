@@ -1,42 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Login</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <title>Beauty Glow - Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
-  <div class="login-container">
-    <h2>Login</h2>
 
-    <input id="login-email" type="email" placeholder="Email" required>
+  <!-- Header -->
+  <header>
+    <div class="brand">💄 Beauty Glow</div>
+    <nav class="nav-links">
+      <a href="#hero">Home</a>
+      <a href="cart.html">🛒 Cart</a>
+      <a href="#contact">Contact</a>
+      <span id="user-controls"></span>
+    </nav>
+  </header>
 
-    <div class="password-wrapper">
-      <input id="login-password" type="password" placeholder="Password" required>
-      <i id="toggle-password" class="fa-solid fa-eye toggle-icon"></i>
+  <!-- Hero Banner -->
+  <section id="hero" class="hero">
+    <div class="hero-content">
+      <h2>Discover Your Glow</h2>
+      <img src="img/luminous-glass-skin-mkp-banner.jpg" alt="Beauty Banner" class="hero-img">
+      <p>Premium beauty & cosmetics at your fingertips.</p>
+      <button class="cta" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Shop Now</button>
     </div>
+  </section>
 
-    <button id="loginBtn">Login</button>
+  <!-- Product Grid -->
+  <main id="products" class="product-grid"></main>
 
-    <p><a href="forgot-password.html">Forgot Password?</a></p>
-    <p><a href="register.html">Register</a></p>
-  </div>
+  <!-- Contact Section -->
+  <section id="contact" class="contact-section">
+    <h2>Contact Us</h2>
+    <p>We’d love to hear from you! Fill out the form below or reach us directly.</p>
+    <div class="contact-container">
+      <!-- Contact Form -->
+      <form id="contactForm">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
 
-  <script type="module" src="login.js"></script>
-  <script>
-    const togglePassword = document.getElementById("toggle-password");
-    const passwordInput = document.getElementById("login-password");
+      <!-- Contact Info -->
+      <div class="contact-info">
+        <p>📍 123 Beauty St, Glow City</p>
+        <p>📧 support@beautyglow.com</p>
+        <p>📞 +63 912 345 6789</p>
+        <p>🕒 Mon - Sat: 9:00 AM - 7:00 PM</p>
+      </div>
+    </div>
+  </section>
 
-    togglePassword.addEventListener("click", () => {
-      const isPassword = passwordInput.type === "password";
-      passwordInput.type = isPassword ? "text" : "password";
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Beauty Glow. All Rights Reserved.</p>
+  </footer>
 
-      // Toggle icon class
-      togglePassword.classList.toggle("fa-eye");
-      togglePassword.classList.toggle("fa-eye-slash");
-    });
-  </script>
+  <!-- Dashboard Logic -->
+  <script type="module" src="dashboard.js"></script>
 </body>
 </html>
