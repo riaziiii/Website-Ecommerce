@@ -45,9 +45,17 @@ document.addEventListener("click", e => {
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartCount(); // ✅ refresh badge
     alert(`${product.name} added to cart!`);
   }
 });
+
+// Update cart count badge
+function updateCartCount() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+  document.getElementById("cart-count").textContent = count;
+}
 
 // Show user controls (login/register OR username/logout)
 function renderUserControls() {
@@ -75,7 +83,10 @@ function renderUserControls() {
   }
 }
 
+
 window.addEventListener("DOMContentLoaded", () => {
   renderUserControls();
   loadProducts();
+  updateCartCount(); // ✅ load badge on page load
 });
+
