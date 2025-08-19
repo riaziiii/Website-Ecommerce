@@ -337,15 +337,15 @@ function showNotification(message, type = 'info') {
 }
 
 // Save for later functionality
-function saveForLater(index) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+async function saveForLater(index) {
+  let cart = await fetchCartFromSource();
   let savedItems = JSON.parse(localStorage.getItem("savedItems")) || [];
   
   const item = cart[index];
   savedItems.push(item);
   cart.splice(index, 1);
   
-  localStorage.setItem("cart", JSON.stringify(cart));
+  await persistCart(cart);
   localStorage.setItem("savedItems", JSON.stringify(savedItems));
   
   loadCart();
@@ -353,8 +353,8 @@ function saveForLater(index) {
 }
 
 // Move to cart from saved items
-function moveToCart(index) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+async function moveToCart(index) {
+  let cart = await fetchCartFromSource();
   let savedItems = JSON.parse(localStorage.getItem("savedItems")) || [];
   
   const item = savedItems[index];
@@ -370,7 +370,7 @@ function moveToCart(index) {
   
   savedItems.splice(index, 1);
   
-  localStorage.setItem("cart", JSON.stringify(cart));
+  await persistCart(cart);
   localStorage.setItem("savedItems", JSON.stringify(savedItems));
   
   loadCart();

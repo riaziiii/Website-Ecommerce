@@ -9,6 +9,7 @@ import { getDatabase } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-
 const response = await fetch("/api/firebase-config");
 const firebaseConfig = await response.json();
 
+
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getDatabase(app);

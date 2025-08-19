@@ -1,3 +1,33 @@
+import { db } from './firebase.js';
+import { ref, get, set } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js';
+
+function getCurrentUserId() {
+  try {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    return currentUser?.uid || null;
+  } catch {
+    return null;
+  }
+}
+
+async function fetchCart() {
+  const uid = getCurrentUserId();
+  if (uid) {
+    try {
+      const snap = await get(ref(db, `carts/${uid}`));
+      if (snap.exists()) return Array.isArray(snap.val()) ? snap.val() : [];
+    } catch (e) { console.error('cart fetch failed', e); }
+  }
+  return JSON.parse(localStorage.getItem('cart') || '[]');
+}
+
+async function saveCart(cart) {
+  localStorage.setItem('cart', JSON.stringify(cart));
+  const uid = getCurrentUserId();
+  if (uid) {
+    try { await set(ref(db, `carts/${uid}`), cart); } catch (e) { console.error('cart save failed', e); }
+  }
+}
 // Product List
 const products = [
   { id: 1, name: "Velvet Matte Lipstick", price: 14.99, image: "images/lipstick.jpg" },
@@ -29,13 +59,13 @@ function loadProducts() {
 }
 
 // Add to cart (with quantity)
-document.addEventListener("click", e => {
+document.addEventListener("click", async e => {
   if (e.target.tagName === "BUTTON" && e.target.dataset.id) {
     const productId = parseInt(e.target.dataset.id);
     const product = products.find(p => p.id === productId);
     if (!product) return;
 
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let cart = await fetchCart();
     const existing = cart.find(item => item.id === productId);
 
     if (existing) {
@@ -44,15 +74,15 @@ document.addEventListener("click", e => {
       cart.push({ ...product, quantity: 1 });
     }
 
-    localStorage.setItem("cart", JSON.stringify(cart));
+    await saveCart(cart);
     updateCartCount(); // ✅ refresh badge
     alert(`${product.name} added to cart!`);
   }
 });
 
 // Update cart count badge
-function updateCartCount() {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+async function updateCartCount() {
+  let cart = await fetchCart();
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
   document.getElementById("cart-count").textContent = count;
 }
@@ -84,9 +114,9 @@ function renderUserControls() {
 }
 
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", async () => {
   renderUserControls();
   loadProducts();
-  updateCartCount(); // ✅ load badge on page load
+  await updateCartCount(); // ✅ load badge on page load
 });
 

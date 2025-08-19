@@ -594,6 +594,13 @@ class CheckoutApp {
              
           
             localStorage.removeItem('cart');
+            // Clear server cart for logged-in users
+            try {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+                if (currentUser?.uid) {
+                    await set(ref(db, `carts/${currentUser.uid}`), []);
+                }
+            } catch {}
             this.showOrderSuccess(orderNumber, estimatedDelivery);
             
         } catch (error) {
