@@ -1,9 +1,48 @@
-function loadCart() {
+import { db } from './firebase.js';
+import { ref, get, set } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js';
+
+function getCurrentUserId() {
+  try {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    return currentUser?.uid || null;
+  } catch {
+    return null;
+  }
+}
+
+async function fetchCartFromSource() {
+  const uid = getCurrentUserId();
+  if (uid) {
+    try {
+      const snap = await get(ref(db, `carts/${uid}`));
+      if (snap.exists()) {
+        return Array.isArray(snap.val()) ? snap.val() : [];
+      }
+    } catch (e) {
+      console.error('Failed to fetch cart from Firebase:', e);
+    }
+  }
+  return JSON.parse(localStorage.getItem('cart') || '[]');
+}
+
+async function persistCart(cart) {
+  localStorage.setItem('cart', JSON.stringify(cart));
+  const uid = getCurrentUserId();
+  if (uid) {
+    try {
+      await set(ref(db, `carts/${uid}`), cart);
+    } catch (e) {
+      console.error('Failed to save cart to Firebase:', e);
+    }
+  }
+}
+
+async function loadCart() {
   const cartContainer = document.getElementById("cart-items");
   const totalElement = document.getElementById("total");
   const checkoutBtn = document.getElementById("checkoutBtn");
 
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let cart = await fetchCartFromSource();
   cartContainer.innerHTML = "";
   let total = 0;
 
@@ -125,7 +164,7 @@ document.addEventListener("click", (e) => {
   }
 
   if (cartUpdated) {
-    localStorage.setItem("cart", JSON.stringify(cart));
+    persistCart(cart);
     loadCart();
   }
 });
@@ -139,7 +178,7 @@ document.addEventListener("change", (e) => {
     
     if (newQuantity >= 1 && newQuantity <= 99) {
       cart[index].quantity = newQuantity;
-      localStorage.setItem("cart", JSON.stringify(cart));
+      persistCart(cart);
       loadCart();
     } else {
       e.target.value = cart[index].quantity; // Reset to original value
@@ -361,7 +400,7 @@ function quickAddToCart(productId, quantity = 1) {
     });
   }
   
-  localStorage.setItem("cart", JSON.stringify(cart));
+  persistCart(cart);
   updateCartCount();
   showNotification(`${product.name} added to cart`, 'success');
 }

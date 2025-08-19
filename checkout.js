@@ -1,5 +1,5 @@
 import { auth, db} from './firebase.js';
-import { ref, push, set } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js'; 
+import { ref, push, set, get } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js'; 
 
 // Checkout Application
 class CheckoutApp {
@@ -28,9 +28,22 @@ class CheckoutApp {
         this.updateStepDisplay();
     }
 
-    // Load cart from localStorage
-    loadCart() {
-        this.cart = JSON.parse(localStorage.getItem('cart')) || [];
+    // Load cart (Firebase for logged-in users, fallback to localStorage)
+    async loadCart() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        if (currentUser?.uid) {
+            try {
+                const snap = await get(ref(db, `carts/${currentUser.uid}`));
+                if (snap.exists()) {
+                    this.cart = Array.isArray(snap.val()) ? snap.val() : [];
+                }
+            } catch (e) {
+                console.error('Failed to fetch cart from Firebase:', e);
+            }
+        }
+        if (!Array.isArray(this.cart) || this.cart.length === 0) {
+            this.cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        }
         if (this.cart.length === 0) {
             alert('Your cart is empty. Returning to cart...');
             window.location.href = 'cart.html';
