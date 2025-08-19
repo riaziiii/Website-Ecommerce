@@ -29,13 +29,25 @@ $("loginBtn").addEventListener("click", async () => {
     const uid = userCredential.user.uid;
 
     const snapshot = await get(ref(db, "users/" + uid));
+    let username = email;
     if (snapshot.exists()) {
-      localStorage.setItem("username", snapshot.val().username);
-    } else {
-      localStorage.setItem("username", email);
+      username = snapshot.val().username || email;
     }
+    // Persist session info consistently for other pages to detect login state
+    localStorage.setItem("username", username);
+    localStorage.setItem(
+      "currentUser",
+      JSON.stringify({ uid, email, username })
+    );
 
-    window.location.href = "index.html";
+    // Redirect back if we came from cart/checkout
+    const redirect = localStorage.getItem("redirectAfterLogin");
+    if (redirect) {
+      localStorage.removeItem("redirectAfterLogin");
+      window.location.href = redirect;
+    } else {
+      window.location.href = "index.html";
+    }
   } catch (err) {
     if (err.code === "auth/invalid-credential") {
       const methods = await fetchSignInMethodsForEmail(auth, email);

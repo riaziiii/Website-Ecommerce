@@ -19,8 +19,18 @@ $("registerBtn").addEventListener("click", async () => {
 
     await set(ref(db, "users/" + uid), { username, email });
     localStorage.setItem("username", username);
+    localStorage.setItem(
+      "currentUser",
+      JSON.stringify({ uid, email, username })
+    );
 
-    window.location.href = "index.html";
+    const redirect = localStorage.getItem("redirectAfterLogin");
+    if (redirect) {
+      localStorage.removeItem("redirectAfterLogin");
+      window.location.href = redirect;
+    } else {
+      window.location.href = "index.html";
+    }
   } catch (err) {
     if (err.code === "auth/email-already-in-use") {
       alert("This email is already registered.");
