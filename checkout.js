@@ -1,3 +1,6 @@
+import { auth, db} from './firebase.js';
+import { ref, push, set } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js'; 
+
 // Checkout Application
 class CheckoutApp {
     constructor() {
@@ -29,8 +32,8 @@ class CheckoutApp {
     loadCart() {
         this.cart = JSON.parse(localStorage.getItem('cart')) || [];
         if (this.cart.length === 0) {
-            alert('Your cart is empty. Redirecting to shop...');
-            window.location.href = 'index.html';
+            alert('Your cart is empty. Returning to cart...');
+            window.location.href = 'cart.html';
             return;
         }
     }
@@ -553,18 +556,13 @@ class CheckoutApp {
         try {
             // Simulate API call
             await this.simulateOrderProcessing();
-            
-            // Generate order number
             const orderNumber = 'BG' + Date.now();
             const estimatedDelivery = this.calculateDeliveryDate();
             
-            // Save order to localStorage (in real app, this would be sent to server)
-            this.saveOrder(orderNumber);
-            
-            // Clear cart
+             await this.saveOrder(orderNumber);
+             
+          
             localStorage.removeItem('cart');
-            
-            // Show success modal
             this.showOrderSuccess(orderNumber, estimatedDelivery);
             
         } catch (error) {
@@ -574,7 +572,25 @@ class CheckoutApp {
             loadingOverlay.classList.remove('active');
         }
     }
+       
+    async saveOrder(orderNumber) {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+     
+        const order = {
+            orderNumber,
+            date: new Date().toISOString(),
+            items: this.cart,
+            shipping: this.shippingInfo,
+            payment:this.paymentInfo,
+            total: document.getElementById('totalAmount').textContent,
+            status: 'confirmed',
+            user: currentUser ? {uid: currentUser.uid, email: currentUser.email, username: currentUser.username } : null 
+        };
 
+        const orderRef = push(ref(db, 'orders'));
+        await set(orderRef, { ...order, id: orderRef.key });
+    }
+      
     // Simulate order processing
     simulateOrderProcessing() {
         return new Promise((resolve) => {
@@ -609,25 +625,7 @@ class CheckoutApp {
         });
     }
 
-    // Save order
-    saveOrder(orderNumber) {
-        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-        const order = {
-            orderNumber,
-            date: new Date().toISOString(),
-            items: this.cart,
-            shipping: this.shippingInfo,
-            payment: this.paymentInfo,
-            total: document.getElementById('totalAmount').textContent,
-            status: 'confirmed'
-            user: currentUser ? { uid: currentUser.uid, email: currentUser.email, username} : null
-        };
-        
-        // Save to localStorage (in real app, send to server)
-        const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-        orders.push(order);
-        localStorage.setItem('orders', JSON.stringify(orders));
-    }
+    // (removed legacy localStorage saveOrder)
 
     // Show order success
     showOrderSuccess(orderNumber, estimatedDelivery) {

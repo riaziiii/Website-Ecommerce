@@ -164,8 +164,8 @@ document.getElementById("checkoutBtn").addEventListener("click", () => {
     // Show login prompt
     const loginPrompt = confirm("You need to be logged in to checkout. Would you like to login now?");
     if (loginPrompt) {
-      // Save current page for redirect after login
-      localStorage.setItem("redirectAfterLogin", "checkout.html");
+      // Save current page for redirect after login (return to dashboard)
+      localStorage.setItem("redirectAfterLogin", "index.html");
       window.location.href = "login.html";
     }
     return;
@@ -370,17 +370,7 @@ function quickAddToCart(productId, quantity = 1) {
 function initCart() {
   loadCart();
   
-  // Check for redirect after login
-  const redirectAfterLogin = localStorage.getItem("redirectAfterLogin");
-  if (redirectAfterLogin === "checkout.html") {
-    localStorage.removeItem("redirectAfterLogin");
-    // Small delay to ensure cart is loaded
-    setTimeout(() => {
-      if (JSON.parse(localStorage.getItem("cart") || "[]").length > 0) {
-        window.location.href = "checkout.html";
-      }
-    }, 500);
-  }
+  // No auto-redirect to checkout after login; user should choose checkout from cart
 }
 
 // Handle logout
