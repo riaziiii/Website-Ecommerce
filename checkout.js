@@ -425,21 +425,39 @@ class CheckoutApp {
         const taxElement = document.getElementById('taxAmount');
         const totalElement = document.getElementById('totalAmount');
 
-        // Calculate subtotal
+        // Ensure cart is loaded; fallback to localStorage if needed
+        if (!Array.isArray(this.cart) || this.cart.length === 0) {
+            this.cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        }
+
+        // If still empty, prevent checkout and return to cart
+        if (!Array.isArray(this.cart) || this.cart.length === 0) {
+            subtotalElement.textContent = '0.00';
+            shippingElement.textContent = '0.00';
+            taxElement.textContent = '0.00';
+            totalElement.textContent = '0.00';
+            alert('Your cart is empty. Returning to cart...');
+            window.location.href = 'cart.html';
+            return;
+        }
+
+        // Calculate subtotal with numeric coercion
         let subtotal = 0;
         summaryItems.innerHTML = '';
 
-        this.cart.forEach(item => {
-            subtotal += item.price * item.quantity;
-            
+        this.cart.forEach(rawItem => {
+            const price = Number(rawItem.price) || 0;
+            const quantity = Number(rawItem.quantity) || 1;
+            subtotal += price * quantity;
+
             const itemElement = document.createElement('div');
             itemElement.className = 'summary-item';
             itemElement.innerHTML = `
                 <div class="item-info">
-                    <div class="item-name">${item.name}</div>
-                    <div class="item-details">Qty: ${item.quantity}</div>
+                    <div class="item-name">${rawItem.name || 'Item'}</div>
+                    <div class="item-details">Qty: ${quantity}</div>
                 </div>
-                <div class="item-price">${(item.price * item.quantity).toFixed(2)}</div>
+                <div class="item-price">${(price * quantity).toFixed(2)}</div>
             `;
             summaryItems.appendChild(itemElement);
         });
