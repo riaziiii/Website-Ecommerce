@@ -30,12 +30,14 @@ async function saveCart(cart) {
 }
 // Product List
 const products = [
-  { id: 1, name: "Velvet Matte Lipstick", price: 14.99, image: "images/lipstick.jpg" },
-  { id: 2, name: "Glow Highlighter Palette", price: 22.50, image: "images/highlighter.jpg" },
-  { id: 3, name: "Silky Foundation", price: 18.99, image: "images/foundation.jpg" },
-  { id: 4, name: "Luxury Perfume", price: 35.00, image: "images/perfume.jpg" },
-  { id: 5, name: "Moisturizing Face Cream", price: 16.75, image: "images/facecream.jpg" },
-  { id: 6, name: "Nail Polish Set", price: 12.50, image: "images/nailpolish.jpg" }
+  { id: 1, name: "Velvet Matte Lipstick", price: 14.99, image: "img/matte_lipstick.jpg" },
+  { id: 2, name: "Glow Highlighter Palette", price: 22.50, image: "img/Highlighter_palette.jpg" },
+  { id: 3, name: "Silky Foundation", price: 18.99, image: "img/foundation.jpg" },
+  { id: 4, name: "Blush On", price: 35.00, image: "img/Blush_on_dior.jpg" },
+  { id: 5, name: "Moisturizing Face Cream", price: 16.75, image: "img/facecream.jpg" },
+  { id: 6, name: "Contour Palette", price: 12.50, image: "img/Contour_dior.jpg" },
+  { id: 5, name: "Moisturizing Face Cream", price: 16.75, image: "img/facecream.jpg" },
+  { id: 6, name: "Contour Palette", price: 12.50, image: "img/Contour_dior.jpg" }
 ];
 
 // Load Products
